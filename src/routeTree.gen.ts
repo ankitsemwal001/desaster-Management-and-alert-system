@@ -9,8 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as CivilianRouteImport } from './routes/civilian'
+import { Route as AuthorityRouteImport } from './routes/authority'
+import { Route as AgencyRouteImport } from './routes/agency'
 import { Route as IndexRouteImport } from './routes/index'
 
+const CivilianRoute = CivilianRouteImport.update({
+  id: '/civilian',
+  path: '/civilian',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthorityRoute = AuthorityRouteImport.update({
+  id: '/authority',
+  path: '/authority',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgencyRoute = AgencyRouteImport.update({
+  id: '/agency',
+  path: '/agency',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +37,61 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/agency': typeof AgencyRoute
+  '/authority': typeof AuthorityRoute
+  '/civilian': typeof CivilianRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/agency': typeof AgencyRoute
+  '/authority': typeof AuthorityRoute
+  '/civilian': typeof CivilianRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/agency': typeof AgencyRoute
+  '/authority': typeof AuthorityRoute
+  '/civilian': typeof CivilianRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/agency' | '/authority' | '/civilian'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/agency' | '/authority' | '/civilian'
+  id: '__root__' | '/' | '/agency' | '/authority' | '/civilian'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AgencyRoute: typeof AgencyRoute
+  AuthorityRoute: typeof AuthorityRoute
+  CivilianRoute: typeof CivilianRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/civilian': {
+      id: '/civilian'
+      path: '/civilian'
+      fullPath: '/civilian'
+      preLoaderRoute: typeof CivilianRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/authority': {
+      id: '/authority'
+      path: '/authority'
+      fullPath: '/authority'
+      preLoaderRoute: typeof AuthorityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency': {
+      id: '/agency'
+      path: '/agency'
+      fullPath: '/agency'
+      preLoaderRoute: typeof AgencyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,17 +104,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AgencyRoute: AgencyRoute,
+  AuthorityRoute: AuthorityRoute,
+  CivilianRoute: CivilianRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
