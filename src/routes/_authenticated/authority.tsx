@@ -6,8 +6,10 @@ import { DISASTERS, severityScore } from "@/lib/disaster-data";
 import { Brain, Radio, Users, Truck, Lock, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
 
-export const Route = createFileRoute("/authority")({
-  component: AuthorityDashboard,
+import { RoleGate } from "@/routes/_authenticated";
+
+export const Route = createFileRoute("/_authenticated/authority")({
+  component: () => <RoleGate allow="authority"><AuthorityDashboard /></RoleGate>,
   head: () => ({ meta: [{ title: "Authority Command — DAMS" }] }),
 });
 

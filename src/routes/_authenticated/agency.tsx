@@ -4,8 +4,10 @@ import { Heart, Package, Users, Utensils, Droplet, Pill } from "lucide-react";
 import { SHELTERS } from "@/lib/disaster-data";
 import { motion } from "framer-motion";
 
-export const Route = createFileRoute("/agency")({
-  component: AgencyDashboard,
+import { RoleGate } from "@/routes/_authenticated";
+
+export const Route = createFileRoute("/_authenticated/agency")({
+  component: () => <RoleGate allow="agency"><AgencyDashboard /></RoleGate>,
   head: () => ({ meta: [{ title: "Relief Agency — DAMS" }] }),
 });
 

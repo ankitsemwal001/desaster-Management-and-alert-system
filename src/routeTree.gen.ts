@@ -9,24 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as CivilianRouteImport } from './routes/civilian'
-import { Route as AuthorityRouteImport } from './routes/authority'
-import { Route as AgencyRouteImport } from './routes/agency'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedCivilianRouteImport } from './routes/_authenticated/civilian'
+import { Route as AuthenticatedAuthorityRouteImport } from './routes/_authenticated/authority'
+import { Route as AuthenticatedAgencyRouteImport } from './routes/_authenticated/agency'
 
-const CivilianRoute = CivilianRouteImport.update({
-  id: '/civilian',
-  path: '/civilian',
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthorityRoute = AuthorityRouteImport.update({
-  id: '/authority',
-  path: '/authority',
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AgencyRoute = AgencyRouteImport.update({
-  id: '/agency',
-  path: '/agency',
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -34,62 +36,92 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedCivilianRoute = AuthenticatedCivilianRouteImport.update({
+  id: '/civilian',
+  path: '/civilian',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedAuthorityRoute = AuthenticatedAuthorityRouteImport.update({
+  id: '/authority',
+  path: '/authority',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedAgencyRoute = AuthenticatedAgencyRouteImport.update({
+  id: '/agency',
+  path: '/agency',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/agency': typeof AgencyRoute
-  '/authority': typeof AuthorityRoute
-  '/civilian': typeof CivilianRoute
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
+  '/agency': typeof AuthenticatedAgencyRoute
+  '/authority': typeof AuthenticatedAuthorityRoute
+  '/civilian': typeof AuthenticatedCivilianRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/agency': typeof AgencyRoute
-  '/authority': typeof AuthorityRoute
-  '/civilian': typeof CivilianRoute
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
+  '/agency': typeof AuthenticatedAgencyRoute
+  '/authority': typeof AuthenticatedAuthorityRoute
+  '/civilian': typeof AuthenticatedCivilianRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/agency': typeof AgencyRoute
-  '/authority': typeof AuthorityRoute
-  '/civilian': typeof CivilianRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
+  '/_authenticated/agency': typeof AuthenticatedAgencyRoute
+  '/_authenticated/authority': typeof AuthenticatedAuthorityRoute
+  '/_authenticated/civilian': typeof AuthenticatedCivilianRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/agency' | '/authority' | '/civilian'
+  fullPaths: '/' | '/login' | '/signup' | '/agency' | '/authority' | '/civilian'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/agency' | '/authority' | '/civilian'
-  id: '__root__' | '/' | '/agency' | '/authority' | '/civilian'
+  to: '/' | '/login' | '/signup' | '/agency' | '/authority' | '/civilian'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/login'
+    | '/signup'
+    | '/_authenticated/agency'
+    | '/_authenticated/authority'
+    | '/_authenticated/civilian'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AgencyRoute: typeof AgencyRoute
-  AuthorityRoute: typeof AuthorityRoute
-  CivilianRoute: typeof CivilianRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  SignupRoute: typeof SignupRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/civilian': {
-      id: '/civilian'
-      path: '/civilian'
-      fullPath: '/civilian'
-      preLoaderRoute: typeof CivilianRouteImport
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/authority': {
-      id: '/authority'
-      path: '/authority'
-      fullPath: '/authority'
-      preLoaderRoute: typeof AuthorityRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/agency': {
-      id: '/agency'
-      path: '/agency'
-      fullPath: '/agency'
-      preLoaderRoute: typeof AgencyRouteImport
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -99,14 +131,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/civilian': {
+      id: '/_authenticated/civilian'
+      path: '/civilian'
+      fullPath: '/civilian'
+      preLoaderRoute: typeof AuthenticatedCivilianRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/authority': {
+      id: '/_authenticated/authority'
+      path: '/authority'
+      fullPath: '/authority'
+      preLoaderRoute: typeof AuthenticatedAuthorityRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/agency': {
+      id: '/_authenticated/agency'
+      path: '/agency'
+      fullPath: '/agency'
+      preLoaderRoute: typeof AuthenticatedAgencyRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
+interface AuthenticatedRouteChildren {
+  AuthenticatedAgencyRoute: typeof AuthenticatedAgencyRoute
+  AuthenticatedAuthorityRoute: typeof AuthenticatedAuthorityRoute
+  AuthenticatedCivilianRoute: typeof AuthenticatedCivilianRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAgencyRoute: AuthenticatedAgencyRoute,
+  AuthenticatedAuthorityRoute: AuthenticatedAuthorityRoute,
+  AuthenticatedCivilianRoute: AuthenticatedCivilianRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AgencyRoute: AgencyRoute,
-  AuthorityRoute: AuthorityRoute,
-  CivilianRoute: CivilianRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  LoginRoute: LoginRoute,
+  SignupRoute: SignupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
