@@ -12,8 +12,10 @@ import { SensorTile } from "@/components/sensor-tile";
 import { useSensorStream } from "@/hooks/use-sensor-stream";
 import { DISASTERS, SHELTERS } from "@/lib/disaster-data";
 
+import { RoleGate } from "@/routes/_authenticated";
+
 export const Route = createFileRoute("/_authenticated/civilian")({
-  component: CivilianDashboard,
+  component: () => <RoleGate allow="civilian"><CivilianDashboard /></RoleGate>,
   head: () => ({ meta: [{ title: "Civilian Console — DAMS" }] }),
 });
 
