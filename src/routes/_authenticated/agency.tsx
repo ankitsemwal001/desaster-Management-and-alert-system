@@ -4,7 +4,7 @@ import { Heart, Package, Users, Utensils, Droplet, Pill } from "lucide-react";
 import { SHELTERS } from "@/lib/disaster-data";
 import { motion } from "framer-motion";
 
-export const Route = createFileRoute("/agency")({
+export const Route = createFileRoute("/_authenticated/agency")({
   component: AgencyDashboard,
   head: () => ({ meta: [{ title: "Relief Agency — DAMS" }] }),
 });

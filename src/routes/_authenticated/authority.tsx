@@ -6,7 +6,7 @@ import { DISASTERS, severityScore } from "@/lib/disaster-data";
 import { Brain, Radio, Users, Truck, Lock, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
 
-export const Route = createFileRoute("/authority")({
+export const Route = createFileRoute("/_authenticated/authority")({
   component: AuthorityDashboard,
   head: () => ({ meta: [{ title: "Authority Command — DAMS" }] }),
 });
