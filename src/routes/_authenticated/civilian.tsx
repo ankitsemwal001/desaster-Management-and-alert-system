@@ -12,7 +12,7 @@ import { SensorTile } from "@/components/sensor-tile";
 import { useSensorStream } from "@/hooks/use-sensor-stream";
 import { DISASTERS, SHELTERS } from "@/lib/disaster-data";
 
-export const Route = createFileRoute("/civilian")({
+export const Route = createFileRoute("/_authenticated/civilian")({
   component: CivilianDashboard,
   head: () => ({ meta: [{ title: "Civilian Console — DAMS" }] }),
 });
