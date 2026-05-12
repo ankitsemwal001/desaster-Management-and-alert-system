@@ -13,6 +13,7 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedGlobalRouteImport } from './routes/_authenticated/global'
 import { Route as AuthenticatedCivilianRouteImport } from './routes/_authenticated/civilian'
 import { Route as AuthenticatedAuthorityRouteImport } from './routes/_authenticated/authority'
 import { Route as AuthenticatedAgencyRouteImport } from './routes/_authenticated/agency'
@@ -35,6 +36,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedGlobalRoute = AuthenticatedGlobalRouteImport.update({
+  id: '/global',
+  path: '/global',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedCivilianRoute = AuthenticatedCivilianRouteImport.update({
   id: '/civilian',
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/agency': typeof AuthenticatedAgencyRoute
   '/authority': typeof AuthenticatedAuthorityRoute
   '/civilian': typeof AuthenticatedCivilianRoute
+  '/global': typeof AuthenticatedGlobalRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/agency': typeof AuthenticatedAgencyRoute
   '/authority': typeof AuthenticatedAuthorityRoute
   '/civilian': typeof AuthenticatedCivilianRoute
+  '/global': typeof AuthenticatedGlobalRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -77,12 +85,27 @@ export interface FileRoutesById {
   '/_authenticated/agency': typeof AuthenticatedAgencyRoute
   '/_authenticated/authority': typeof AuthenticatedAuthorityRoute
   '/_authenticated/civilian': typeof AuthenticatedCivilianRoute
+  '/_authenticated/global': typeof AuthenticatedGlobalRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/signup' | '/agency' | '/authority' | '/civilian'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/agency'
+    | '/authority'
+    | '/civilian'
+    | '/global'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/signup' | '/agency' | '/authority' | '/civilian'
+  to:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/agency'
+    | '/authority'
+    | '/civilian'
+    | '/global'
   id:
     | '__root__'
     | '/'
@@ -92,6 +115,7 @@ export interface FileRouteTypes {
     | '/_authenticated/agency'
     | '/_authenticated/authority'
     | '/_authenticated/civilian'
+    | '/_authenticated/global'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -131,6 +155,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/global': {
+      id: '/_authenticated/global'
+      path: '/global'
+      fullPath: '/global'
+      preLoaderRoute: typeof AuthenticatedGlobalRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/civilian': {
       id: '/_authenticated/civilian'
       path: '/civilian'
@@ -159,12 +190,14 @@ interface AuthenticatedRouteChildren {
   AuthenticatedAgencyRoute: typeof AuthenticatedAgencyRoute
   AuthenticatedAuthorityRoute: typeof AuthenticatedAuthorityRoute
   AuthenticatedCivilianRoute: typeof AuthenticatedCivilianRoute
+  AuthenticatedGlobalRoute: typeof AuthenticatedGlobalRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAgencyRoute: AuthenticatedAgencyRoute,
   AuthenticatedAuthorityRoute: AuthenticatedAuthorityRoute,
   AuthenticatedCivilianRoute: AuthenticatedCivilianRoute,
+  AuthenticatedGlobalRoute: AuthenticatedGlobalRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
