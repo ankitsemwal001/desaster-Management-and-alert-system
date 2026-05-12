@@ -1,14 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
-import { Globe, Radar, RefreshCcw, MapPin, AlertTriangle, Activity, Navigation2, Shield } from "lucide-react";
+import { Globe, Radar, RefreshCcw, MapPin, Activity, Navigation2, Shield } from "lucide-react";
 import { CommandHeader } from "@/components/command-header";
 import { GlobalDisasterMap } from "@/components/global-disaster-map";
 import { EnvironmentDashboard } from "@/components/environment-dashboard";
 import { EmergencyAlert } from "@/components/emergency-alert";
+import { HazardRadar } from "@/components/hazard-radar";
+import { ShelterLocator } from "@/components/shelter-locator";
 import { useLiveDisasters, distanceKm, type LiveDisaster } from "@/hooks/use-live-disasters";
 import { useGeolocation } from "@/hooks/use-geolocation";
-import { SHELTERS } from "@/lib/disaster-data";
 
 export const Route = createFileRoute("/_authenticated/global")({
   component: GlobalConsole,
