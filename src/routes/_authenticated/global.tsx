@@ -10,6 +10,7 @@ import { HazardRadar } from "@/components/hazard-radar";
 import { ShelterLocator } from "@/components/shelter-locator";
 import { useLiveDisasters, distanceKm, type LiveDisaster } from "@/hooks/use-live-disasters";
 import { useGeolocation } from "@/hooks/use-geolocation";
+import { SHELTERS } from "@/lib/disaster-data";
 
 export const Route = createFileRoute("/_authenticated/global")({
   component: GlobalConsole,
@@ -62,8 +63,24 @@ function GlobalConsole() {
 
   const findSafeShelter = () => {
     if (geo.lat == null || geo.lng == null) return;
-    const sorted = SHELTERS.map((s) => ({ s, km: distanceKm({ lat: geo.lat!, lng: geo.lng! }, s) })).sort((a, b) => a.km - b.km);
-    if (sorted[0]) computeRoute({ lat: sorted[0].s.lat, lng: sorted[0].s.lng, label: sorted[0].s.name });
+    const u = { lat: geo.lat, lng: geo.lng };
+    const ranked = SHELTERS.map((s) => {
+      const km = distanceKm(u, s);
+      const availability = 1 - s.occupied / s.capacity;
+      let penalty = 0;
+      for (const d of data) {
+        const hk = distanceKm({ lat: s.lat, lng: s.lng }, d);
+        if (hk < 100) {
+          const sev = d.severity === "extreme" ? 40 : d.severity === "high" ? 25 : d.severity === "moderate" ? 10 : 3;
+          penalty += sev * (1 - hk / 100);
+        }
+      }
+      penalty = Math.min(100, penalty);
+      const distScore = Math.max(0, 100 - (km / 5000) * 100);
+      const score = distScore * 0.45 + availability * 100 * 0.25 + (100 - penalty) * 0.30;
+      return { s, score };
+    }).sort((a, b) => b.score - a.score);
+    if (ranked[0]) computeRoute({ lat: ranked[0].s.lat, lng: ranked[0].s.lng, label: ranked[0].s.name });
   };
 
   const counts = useMemo(() => {
@@ -160,38 +177,14 @@ function GlobalConsole() {
           <div className="space-y-4">
             <EnvironmentDashboard lat={geo.lat} lng={geo.lng} />
 
-            {/* Nearby hazard radar */}
-            <div className="glass rounded-xl p-4">
-              <div className="mb-3 flex items-center justify-between">
-                <div className="font-display text-sm tracking-wider flex items-center gap-2">
-                  <AlertTriangle className="h-4 w-4 text-danger" /> NEARBY HAZARDS
-                </div>
-                <span className="text-[10px] text-muted-foreground">{ranked.length} tracked</span>
-              </div>
-              <div className="max-h-80 space-y-2 overflow-y-auto pr-1">
-                {ranked.slice(0, 8).map((d) => {
-                  const km = (d as LiveDisaster & { _km?: number })._km;
-                  const color = d.severity === "extreme" ? "var(--color-danger)" : d.severity === "high" ? "oklch(0.7 0.22 35)" : d.severity === "moderate" ? "var(--color-warn)" : "var(--color-cyber)";
-                  return (
-                    <motion.div
-                      key={d.id}
-                      initial={{ opacity: 0, x: 10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className="rounded-md border border-border bg-muted/30 p-2.5"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 text-xs">
-                          <span className="h-2 w-2 rounded-full" style={{ background: color, boxShadow: `0 0 8px ${color}` }} />
-                          <span className="font-medium uppercase">{d.category}</span>
-                        </div>
-                        {km != null && <span className="font-mono text-[11px] text-muted-foreground">{km.toFixed(0)} km</span>}
-                      </div>
-                      <div className="mt-1 truncate text-[11px] text-muted-foreground">{d.title}</div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </div>
+            <HazardRadar user={{ lat: geo.lat, lng: geo.lng }} disasters={data} />
+
+            <ShelterLocator
+              user={{ lat: geo.lat, lng: geo.lng }}
+              disasters={data}
+              onRoute={(dest) => computeRoute(dest)}
+              autoRouted={!!route && !!routeTo}
+            />
 
             {/* AI risk panel */}
             <div className="glass rounded-xl p-4">
