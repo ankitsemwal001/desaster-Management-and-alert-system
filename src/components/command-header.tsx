@@ -22,7 +22,8 @@ export function CommandHeader() {
 
         <nav className="hidden items-center gap-1 text-xs md:flex">
           {[
-            { to: "/", label: "Overview" },
+          { to: "/", label: "Overview" },
+            { to: "/global", label: "Global" },
             { to: "/civilian", label: "Civilian" },
             { to: "/authority", label: "Authority" },
             { to: "/agency", label: "Agency" },

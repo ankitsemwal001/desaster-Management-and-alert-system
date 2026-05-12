@@ -55,11 +55,29 @@ export const DISASTERS: DisasterEvent[] = [
 ];
 
 export const SHELTERS: Shelter[] = [
-  { id: "s1", name: "Govt Relief Camp 2",   lat: 29.9600, lng: 78.1500, capacity: 1200, occupied: 870, type: "relief-camp" },
-  { id: "s2", name: "AIIMS Field Hospital", lat: 19.8200, lng: 85.8200, capacity: 600,  occupied: 410, type: "hospital" },
-  { id: "s3", name: "Govt School Shelter",  lat: 27.5200, lng: 88.5000, capacity: 800,  occupied: 320, type: "school" },
-  { id: "s4", name: "Red Cross Camp",       lat: 11.6900, lng: 76.1400, capacity: 400,  occupied: 180, type: "relief-camp" },
-  { id: "s5", name: "Medical Camp Alpha",   lat: 17.6900, lng: 83.2100, capacity: 500,  occupied: 350, type: "hospital" },
+  // India
+  { id: "s1",  name: "Govt Relief Camp 2",     lat: 29.9600,  lng: 78.1500,   capacity: 1200, occupied: 870, type: "relief-camp" },
+  { id: "s2",  name: "AIIMS Field Hospital",   lat: 19.8200,  lng: 85.8200,   capacity: 600,  occupied: 410, type: "hospital" },
+  { id: "s3",  name: "Govt School Shelter",    lat: 27.5200,  lng: 88.5000,   capacity: 800,  occupied: 320, type: "school" },
+  { id: "s4",  name: "Red Cross Camp",         lat: 11.6900,  lng: 76.1400,   capacity: 400,  occupied: 180, type: "relief-camp" },
+  { id: "s5",  name: "Medical Camp Alpha",     lat: 17.6900,  lng: 83.2100,   capacity: 500,  occupied: 350, type: "hospital" },
+  // Asia
+  { id: "s6",  name: "Tokyo Disaster Center",  lat: 35.6762,  lng: 139.6503,  capacity: 2500, occupied: 900, type: "relief-camp" },
+  { id: "s7",  name: "Manila Evac Hub",        lat: 14.5995,  lng: 120.9842,  capacity: 1800, occupied: 1500,type: "school" },
+  { id: "s8",  name: "Jakarta Safe Zone",      lat: -6.2088,  lng: 106.8456,  capacity: 1400, occupied: 700, type: "relief-camp" },
+  // Europe
+  { id: "s9",  name: "Berlin Civil Shelter",   lat: 52.5200,  lng: 13.4050,   capacity: 2200, occupied: 600, type: "relief-camp" },
+  { id: "s10", name: "Rome Red Cross",         lat: 41.9028,  lng: 12.4964,   capacity: 900,  occupied: 350, type: "hospital" },
+  { id: "s11", name: "London Crisis Centre",   lat: 51.5074,  lng: -0.1278,   capacity: 1600, occupied: 800, type: "relief-camp" },
+  // Americas
+  { id: "s12", name: "NYC Emergency Center",   lat: 40.7128,  lng: -74.0060,  capacity: 3000, occupied: 1100,type: "hospital" },
+  { id: "s13", name: "LA County Shelter",      lat: 34.0522,  lng: -118.2437, capacity: 2400, occupied: 1900,type: "school" },
+  { id: "s14", name: "Mexico City Refuge",     lat: 19.4326,  lng: -99.1332,  capacity: 1700, occupied: 1300,type: "relief-camp" },
+  { id: "s15", name: "São Paulo Civil Hub",    lat: -23.5505, lng: -46.6333,  capacity: 2000, occupied: 800, type: "relief-camp" },
+  // Africa & Oceania
+  { id: "s16", name: "Nairobi Aid Camp",       lat: -1.2921,  lng: 36.8219,   capacity: 1300, occupied: 950, type: "relief-camp" },
+  { id: "s17", name: "Cape Town Shelter",      lat: -33.9249, lng: 18.4241,   capacity: 1100, occupied: 400, type: "hospital" },
+  { id: "s18", name: "Sydney Emergency Hub",   lat: -33.8688, lng: 151.2093,  capacity: 1900, occupied: 700, type: "relief-camp" },
 ];
 
 export function severityScore(s: Severity): number {
